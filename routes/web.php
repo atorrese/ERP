@@ -13,7 +13,8 @@
 
 
 Route::resources([
-    'categories'=>'CategoryController'
+    'categories'=>'CategoryController',
+    'products'=>'ProductController'
 ]);
 
 Route::get('/', function () {

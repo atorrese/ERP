@@ -1,95 +1,53 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
+@extends('layout')
+@section('title',"Categorias")
+@section('content')
+<div class="row row-cols-1 row-cols-md-2">
+    <div class="col mb-4">
+        <a href="{{route('products.index')}}">
+            <div class="card">
+                <img src="https://th.bing.com/th/id/R6acdf41b5577f8ea0b9ef3c1ee67643a?rik=ipVqBCh2F1gYhw&riu=http%3a%2f%2fwww.stonyelectrical.com%2fwp-content%2fuploads%2f2018%2f04%2fProduct_Icon.png&ehk=ZTHysmaMXbmWa2AdM4ismLU447aFvK1AAYZOTe0yO18%3d&risl=&pid=ImgRaw" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Productos</h5>
+                  <p class="card-text">
+                      Mantenimiento de Productos
+                    </p>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+              </div>
+        </a>
+    </div>
+    <div class="col mb-4">
+        <a href="{{route('categories.index')}}">
+      <div class="card">
+        <img src="https://th.bing.com/th/id/R948a1c7aec1ba46cccc27fcfe4330cb3?rik=Nz1pfCDfdCNLLA&riu=http%3a%2f%2fwinsupply.co.uk%2fwp-content%2fuploads%2fcategory-management.jpg&ehk=dEzMk3CR7vX0gRBnsygBR5oQWC2XJcuxKIoHlyfFMbo%3d&risl=&pid=ImgRaw" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Categorias</h5>
+          <p class="card-text">
+            Mantenimiento de Categorias
+        </p>
         </div>
-    </body>
-</html>
+      </div>
+    </a>
+    </div>
+    <div class="col mb-4 hidden" hidden>
+      <div class="card">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col mb-4 hidden" hidden>
+      <div class="card">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+@endsection
+{{-- s --}}
+    

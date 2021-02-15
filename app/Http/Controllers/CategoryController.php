@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,7 +15,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        //$categories =Category::orderBy('created_at','desc')->paginate(5);
+        //$categories =Category::oldest()->paginate(5);
+        $categories =Category::latest()->paginate(5);
+        $title ='Listado de Categorias';
+        return view('categories.index',compact('title','categories'));
     }
 
     /**
@@ -24,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -35,7 +40,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $data = request()->validate([
+            'name' => ['required','unique:categories,name'],
+        ],[
+            'name.required' => 'El campo es obligatorio',
+            'name.unique' => 'El campo debe ser unico.'
+        ]);
+        Category::create([
+            'name'=>$data['name'],
+        ]);
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -46,7 +61,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return  view('categories.show',compact('category'));  
     }
 
     /**
@@ -57,7 +72,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('categories.edit',['category'=>  $category]);  
     }
 
     /**
@@ -69,7 +84,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'name'=>[
+                'required',
+                Rule::unique('categories')->ignore($category->id)
+            ]
+            ]);
+        $category->update($data);
+        return  redirect()->route('categories.show',['category'=>$category]);
     }
 
     /**
@@ -80,6 +102,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        //dd($category->products()->count());
+        if($category->products->count() == 0){
+            $category->delete();
+        }
+        return redirect()->route('categories.index');
     }
 }
