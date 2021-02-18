@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -12,56 +14,38 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
-        $products = Product::latest()->paginate(5);
-        $title  ='Listado de Productos';
-        return view('products.index',compact('title','products'));
+        return view('products.index',[
+            'title'=>'Listado de Productos',
+            'products'=>Product::query()->latest()->paginate(5)
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function create()
     {
-        $categories= Category::all();
-        return view('products.create',compact('categories','categories'));
+        return view('products.create',[
+            'categories'=> Category::all()
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\ProductStoreRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
-        $data = request()->validate([
-            'name' => ['required','unique:products,name'],
-            'description'=>'required',
-            'price'=>'required',
-            'cost'=>'required',
-            'stock'=>'required',
-        ],[
-            'name.required' => 'El Campo es Obligatorio',
-            'name.unique' => 'El campo debe ser unico',
-            'description.required' => 'El Campo es Obligatorio',
-            'price.required' => 'El Campo es Obligatorio',
-            'cost.required' => 'El Campo es Obligatorio',
-            'stock.required' => 'El Campo es Obligatorio',
-            ]);
-        Product::create([
-            'name'=>$data['name'],
-            'description'=>$data['description'],
-            'price'=>$data['price'],
-            'cost'=>$data['cost'],
-            'stock'=>$data['stock'],
-            'category_id'=>$data['category_id'],
-        ]);
+        Product::create($request->validated());
+
         return redirect()->route('products.index');
     }
 
@@ -69,23 +53,27 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function show(Product $product)
     {
-        return  view('products.show',compact('product'));  
+        return  view('products.show',[
+            'products'=> $product
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function edit(Product $product)
     {
-        $categories= Category::all();
-        return view('products.edit',['product'=>  $product,'categories'=>$categories]);  
+        return view('products.edit',[
+            'product' =>  $product,
+            'categories' =>Category::all()
+        ]);
     }
 
     /**
@@ -93,41 +81,27 @@ class ProductController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        $data = $request->validate([
-            'name'=>[
-                'required',
-                Rule::unique('products')->ignore($product->id)],
-                'description'=>'required',
-                'price'=>'required',
-                'cost'=>'required',
-                'stock'=>'required',
-                'category_id'=>''
-            ],[
-                'name.required' => 'El Campo es Obligatorio',
-                'name.unique' => 'El campo debe ser unico',
-                'description.required' => 'El Campo es Obligatorio',
-                'price.required' => 'El Campo es Obligatorio',
-                'cost.required' => 'El Campo es Obligatorio',
-                'stock.required' => 'El Campo es Obligatorio',
-                ]);
-        //dd($data);
-        $product->update($data);
-        return  redirect()->route('products.show',['product'=>$product]);
+        $product->update($request->validated());
+
+        return  redirect()->route('products.show',[
+            'product' => $product
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Product $product)
     {
         $product->delete();
+
         return redirect()->route('products.index');
     }
 }

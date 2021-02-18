@@ -46,7 +46,7 @@
                 </tr>
                 @empty
                     <tr>
-                        <td>No hay usuarios registrados.</td>
+                        <td>No existen Productos registrados.</td>
                     </tr>
 
                 @endforelse   
