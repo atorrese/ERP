@@ -15,9 +15,11 @@ class DatabaseSeeder extends Seeder
         $this->truncateTables([
             'products',
             'categories',
+            'clients'
         ]);
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
+        $this->call(ClientSeeder::class);
         // $this->call(UsersTableSeeder::class);
     }
 
