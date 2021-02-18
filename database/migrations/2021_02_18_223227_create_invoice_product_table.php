@@ -19,6 +19,10 @@ class CreateInvoiceProductsTable extends Migration
             $table->double('price');
             $table->double('iva');
             $table->double('total');
+            $table->unsignedInteger('invoice_id')->nullable();
+            $table->unsignedInteger('product_id')->nullable();
+            $table->foreign('invoice_id')->references('id')->on('invoices');
+            $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();
         });
     }
