@@ -18,6 +18,10 @@ class CreateInvoicesTable extends Migration
             $table->double('subtotal');
             $table->double('iva');
             $table->double('total');
+            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
