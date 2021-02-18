@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\CategoryStoreRequest;
+use App\Http\Requests\CategoryUpdateRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
@@ -15,11 +17,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //$categories =Category::orderBy('created_at','desc')->paginate(5);
-        //$categories =Category::oldest()->paginate(5);
-        $categories =Category::latest()->paginate(5);
-        $title ='Listado de Categorias';
-        return view('categories.index',compact('title','categories'));
+        return view('categories.index',[
+            'title'=>'Listado de Categorias',
+            'categories'=>Category::query()->latest()->paginate(5)
+        ]);
     }
 
     /**
@@ -35,21 +36,13 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CategoryStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
+        dd(Category::create($request->validated()));
 
-        $data = request()->validate([
-            'name' => ['required','unique:categories,name'],
-        ],[
-            'name.required' => 'El campo es obligatorio',
-            'name.unique' => 'El campo debe ser unico.'
-        ]);
-        Category::create([
-            'name'=>$data['name'],
-        ]);
         return redirect()->route('categories.index');
     }
 
@@ -61,7 +54,9 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return  view('categories.show',compact('category'));  
+        return  view('categories.show',[
+            'category'=>  $category
+        ]);
     }
 
     /**
@@ -72,26 +67,25 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit',['category'=>  $category]);  
+        return view('categories.edit',[
+            'category'=>  $category
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CategoryUpdateRequest  $request
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryUpdateRequest $request, Category $category)
     {
-        $data = $request->validate([
-            'name'=>[
-                'required',
-                Rule::unique('categories')->ignore($category->id)
-            ]
-            ]);
-        $category->update($data);
-        return  redirect()->route('categories.show',['category'=>$category]);
+        $category->update($request->validated());
+
+        return  redirect()->route('categories.show',[
+            'category'=>$category
+        ]);
     }
 
     /**
@@ -102,7 +96,6 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //dd($category->products()->count());
         if($category->products->count() == 0){
             $category->delete();
         }

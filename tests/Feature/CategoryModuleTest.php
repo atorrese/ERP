@@ -75,14 +75,14 @@ class CategoryTest extends TestCase
        ->post('categories',[
            'name'=>''
        ])->assertRedirect('categories/create')
-       ->assertSessionHasErrors(['name'=>'El campo es obligatorio']);
+       ->assertSessionHasErrors(['name'=>'El campo es obligatorio.']);
 
        $this->assertEquals(0,Category::count());
    }  
     /** @test */
     public function the_name_must_be_unique()
     {
-       // $this->withoutExceptionHandling();
+        //$this->withoutExceptionHandling();
         factory(Category::class)->create([
             'name'=>'Medicina'
         ]);
