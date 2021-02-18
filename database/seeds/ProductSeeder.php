@@ -24,7 +24,7 @@ class ProductSeeder extends Seeder
             'category_id'=>$category
 
             ]);
-        $category =Category::;
+
         
         factory(Product::class)->times(19)->create();
     }
