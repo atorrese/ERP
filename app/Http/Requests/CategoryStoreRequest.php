@@ -16,22 +16,13 @@ class CategoryStoreRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
             'name' => ['required','unique:categories,name']
         ];
     }
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array
-     */
+
     public function messages()
     {
         return [
