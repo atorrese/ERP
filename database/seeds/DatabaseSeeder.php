@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
+            'invoices',
             'products',
             'categories',
             'clients'
