@@ -16,6 +16,7 @@ Route::resources([
     'categories'=>'CategoryController',
     'products'=>'ProductController',
     'clients'=>'ClientController',
+    'invoices'=> 'InvoiceController'
 ]);
 
 Route::get('/', function () {
