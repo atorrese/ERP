@@ -11,8 +11,8 @@ class ClientSeeder extends Seeder
      */
     public function run()
     {
-        Client::create([
-            'name'=>'Tecnologia'
+        factory(Client::class)->create([
+            'names'=>'Juana Mariana'
         ]);
         factory(Client::class)->times(19)->create();
     }
